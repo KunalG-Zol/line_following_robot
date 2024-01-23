@@ -26,7 +26,7 @@ void start_moving(){
   RIGHT_MOTOR.setSpeed(200);
   LEFT_MOTOR.run(FORWARD);
   RIGHT_MOTOR.run(FORWARD);
-  delay(10);
+  delay(30);
   LEFT_MOTOR.setSpeed(motor_speed);
   RIGHT_MOTOR.setSpeed(motor_speed);
 }
@@ -45,7 +45,7 @@ void go_left(){
 void go_right(){
   Serial.println("going right");
   start_moving();
-  LEFT_MOTOR.run(RELEASE);
+  RIGHT_MOTOR.run(RELEASE);
   delay(move_for_ms);
 }
 
