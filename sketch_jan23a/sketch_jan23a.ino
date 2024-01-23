@@ -26,24 +26,31 @@ void loop() {
     motor_right.run(FORWARD);
   }
 
-  else if(irLeftVal<irThreshold && irRightVal>irThreshold){
-    motor_left.setSpeed(120);
+  else if (irLeftVal<irThreshold && irRightVal<irThreshold){
+    motor_left.run(RELEASE);
+    motor_right.run(RELEASE);
+  }
+
+  else{
+    motor_right.setSpeed(0);
+    motor_left.setSpeed(0);
+
+    if(irLeftVal<irThreshold && irRightVal>irThreshold){
+    motor_left.setSpeed(200);
+    delay(100);
+    motor_left.setSpeed(150);
     motor_right.setSpeed(0);
     motor_right.run(FORWARD);
     motor_left.run(FORWARD);
   }
 
   else if(irLeftVal>irThreshold && irRightVal<irThreshold){
-    motor_left.setSpeed(0);
+    motor_right.setSpeed(200);
+    delay(100);
     motor_right.setSpeed(120);
+    motor_left.setSpeed(0);
     motor_right.run(FORWARD);
     motor_left.run(FORWARD);
   }
-
-  else{
-    motor_left.setSpeed(200);
-    motor_right.setSpeed(200);
-    motor_right.run(FORWARD);
-    motor_left.run(FORWARD);
   }
 }
