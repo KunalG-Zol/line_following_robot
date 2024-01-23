@@ -10,7 +10,7 @@ AF_DCMotor RIGHT_MOTOR(1, 120);
 AF_DCMotor LEFT_MOTOR (4, 120);
 
 int motor_speed = 80;
-int turn_delay = 500;
+int move_for_ms = 500;
 
 bool on_white(int ir_value){
   if (ir_value < 450){
@@ -21,20 +21,42 @@ bool on_white(int ir_value){
   }
 }
 
-void setup() {
-
+void start_moving(){
+  LEFT_MOTOR.setSpeed(200);
+  RIGHT_MOTOR.setSpeed(200);
+  LEFT_MOTOR.run(FORWARD);
+  RIGHT_MOTOR.run(FORWARD);
+  delay(50);
   LEFT_MOTOR.setSpeed(motor_speed);
   RIGHT_MOTOR.setSpeed(motor_speed);
+}
 
+void go_forward(){
+  start_moving();
+  delay(move_for_ms);  
+}
+
+void go_left(){
+  start_moving();
+  LEFT_MOTOR.run(RELEASE);
+  delay(move_for_ms);
+}
+void go_right(){
+  start_moving();
+  LEFT_MOTOR.run(RELEASE);
+  delay(move_for_ms);
+}
+
+void setup() {
+  LEFT_MOTOR.setSpeed(motor_speed);
+  RIGHT_MOTOR.setSpeed(motor_speed);
   pinMode(LEFT_IRS, INPUT);
   pinMode(RIGHT_IRS, INPUT);
-
   Serial.begin(9600);
 }
 
 void loop(){
-  int right_ir_val,left_ir_val;
-  
+  int right_ir_val, left_ir_val;
   left_ir_val = analogRead(LEFT_IRS);
   right_ir_val = analogRead(RIGHT_IRS);
   bool left_on_white = on_white(right_ir_val);
@@ -44,26 +66,21 @@ void loop(){
   Serial.println(left_ir_val);
   Serial.print("right=");
   Serial.println(right_ir_val);
-  delay(500);
+  // delay(500);
   
   //Forward
   if( left_on_white && right_on_white){
-    RIGHT_MOTOR.run(FORWARD);
-    LEFT_MOTOR.run(FORWARD);
+  go_forward();
   }
   
   //turn left
   if ( !(left_on_white) && right_on_white){
-    RIGHT_MOTOR.run(FORWARD);
-    LEFT_MOTOR.run(RELEASE);
-    delay(turn_delay);
+    go_left();
   }
 
   //turn right
   if( left_on_white && !(right_on_white)){
-    RIGHT_MOTOR.run(RELEASE);
-    LEFT_MOTOR.run(FORWARD);
-    delay(turn_delay);
+    go_right();
   }
 
   //stop
