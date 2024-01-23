@@ -9,8 +9,8 @@
 AF_DCMotor RIGHT_MOTOR(1, 120); 
 AF_DCMotor LEFT_MOTOR (4, 120);
 
-int motor_speed = 80;
-int move_for_ms = 500;
+int motor_speed = 60;
+int move_for_ms = 100;
 
 bool on_white(int ir_value){
   if (ir_value < 450){
@@ -26,7 +26,7 @@ void start_moving(){
   RIGHT_MOTOR.setSpeed(200);
   LEFT_MOTOR.run(FORWARD);
   RIGHT_MOTOR.run(FORWARD);
-  delay(50);
+  delay(10);
   LEFT_MOTOR.setSpeed(motor_speed);
   RIGHT_MOTOR.setSpeed(motor_speed);
 }
@@ -37,11 +37,13 @@ void go_forward(){
 }
 
 void go_left(){
+  Serial.println("going left");
   start_moving();
   LEFT_MOTOR.run(RELEASE);
   delay(move_for_ms);
 }
 void go_right(){
+  Serial.println("going right");
   start_moving();
   LEFT_MOTOR.run(RELEASE);
   delay(move_for_ms);
@@ -62,10 +64,10 @@ void loop(){
   bool left_on_white = on_white(right_ir_val);
   bool right_on_white = on_white(left_ir_val);
   
-  Serial.print("left=");
-  Serial.println(left_ir_val);
-  Serial.print("right=");
-  Serial.println(right_ir_val);
+  // Serial.print("left=");
+  // Serial.println(left_ir_val);
+  // Serial.print("right=");
+  // Serial.println(right_ir_val);
   // delay(500);
   
   //Forward
