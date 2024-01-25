@@ -1,4 +1,4 @@
-  #include <AFMotor.h>
+ #include <AFMotor.h>
   
   AF_DCMotor motor_right(1);
   AF_DCMotor motor_left(4);
@@ -19,14 +19,14 @@ void loop() {
 
   int irThreshold = 450;
 
-  if(irLeftVal>irThreshold && irRightVal>irThreshold){
-    motor_left.setSpeed(200);
-    motor_right.setSpeed(200);
+  if(irLeftVal<irThreshold && irRightVal<irThreshold){
+    motor_left.setSpeed(150);
+    motor_right.setSpeed(150);
     motor_left.run(FORWARD);
     motor_right.run(FORWARD);
   }
 
-  else if (irLeftVal<irThreshold && irRightVal<irThreshold){
+  else if (irLeftVal>irThreshold && irRightVal>irThreshold){
     motor_left.run(RELEASE);
     motor_right.run(RELEASE);
   }
@@ -34,6 +34,7 @@ void loop() {
   else{
     motor_right.setSpeed(0);
     motor_left.setSpeed(0);
+    delay(1000);
 
     if(irLeftVal<irThreshold && irRightVal>irThreshold){
     motor_left.setSpeed(200);
