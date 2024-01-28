@@ -7,6 +7,7 @@
  double kp = 1.0;
  double ki = 0.1;
  double kd = 0.01;
+ int const base_speed = 150;
 
  PID pid(&input, &output, &setpoint, kp, ki, kd, DIRECT);
   
@@ -36,42 +37,39 @@ void loop() {
   
 
 
-  if(irLeftVal==LOW && irRightVal==LOW){
-    motor_left.setSpeed(150);
-    motor_right.setSpeed(150);
+  if(irLeftVal==HIGH && irRightVal==HIGH){
+    motor_left.setSpeed(base_speed);
+    motor_right.setSpeed(base_speed);
     motor_left.run(FORWARD);
     motor_right.run(FORWARD);
   }
 
   else{
-    motor_left.run(BACKWARD);
+   /* motor_left.run(BACKWARD);
     motor_right.run(BACKWARD);
-    delay(50);
-    if (irLeftVal==HIGH && irRightVal==HIGH){
+    delay(50);*/
+    if (irLeftVal==LOW && irRightVal==LOW){
     motor_right.run(RELEASE);
     motor_left.run(RELEASE);
   }
 
     else if(irLeftVal==HIGH && irRightVal==LOW){
+    adjustMotors(output);
     motor_right.run(BACKWARD);
     motor_left.run(FORWARD);
-    motor_left.setSpeed(200);
-    motor_right.setSpeed(200);
-    delay(100);
-    motor_left.setSpeed(150);
-    motor_right.setSpeed(150);
-    delay(250);
+
   }
 
   else if(irLeftVal==LOW && irRightVal==HIGH){
+    adjustMotors(output);
     motor_left.run(BACKWARD);
     motor_right.run(FORWARD);
-    motor_left.setSpeed(200);
-    motor_right.setSpeed(200);
-    delay(100);
-    motor_left.setSpeed(150);
-    motor_right.setSpeed(150);
-    delay(120);
   }
   }
+}
+
+void adjustMotors(double pidOutput){
+ int base_speed = 150;
+ motor_left.setSpeed(base_speed-pidOutput);
+ motor_right.setSpeed(base_speed+pidOutput);
 }
